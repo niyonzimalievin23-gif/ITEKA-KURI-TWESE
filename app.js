@@ -128,3 +128,91 @@ if (
 
 alert("Code ou nom incorrect."); 
 });
+
+// ======================================
+// QUESTIONS PUBLIQUES - ITEKA KURI TWESE
+// ======================================
+
+const btnAfficherQuestions = document.getElementById("btnAfficherQuestions");
+const zoneQuestions = document.getElementById("zoneQuestions");
+const listeQuestions = document.getElementById("listeQuestions");
+const reponseFAQ = document.getElementById("reponseFAQ");
+const formQuestionPublique = document.getElementById("formQuestionPublique");
+
+if (btnAfficherQuestions) {
+    btnAfficherQuestions.addEventListener("click", async function() {
+
+        zoneQuestions.style.display =
+            zoneQuestions.style.display === "none" ? "block" : "none";
+
+        if (zoneQuestions.style.display === "block") {
+            listeQuestions.textContent = "Chargement des questions...";
+
+            const { data, error } = await supabaseClient
+                .from("questions_frequentes")
+                .select("question, reponse")
+                .eq("actif", true)
+                .order("question");
+
+            if (error) {
+                listeQuestions.textContent =
+                    "Erreur : " + error.message;
+                return;
+            }
+
+            listeQuestions.innerHTML = "";
+
+            data.forEach(function(item) {
+                const bouton = document.createElement("button");
+                bouton.type = "button";
+                bouton.textContent = item.question;
+
+                bouton.addEventListener("click", function() {
+                    reponseFAQ.textContent = item.reponse;
+                });
+
+                listeQuestions.appendChild(bouton);
+            });
+        }
+    });
+}
+
+if (formQuestionPublique) {
+    formQuestionPublique.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const nom = document.getElementById("nomQuestion").value.trim();
+        const telephone = document.getElementById("telephoneQuestion").value.trim();
+        const province = document.getElementById("provinceQuestion").value.trim();
+        const commune = document.getElementById("communeQuestion").value.trim();
+        const colline = document.getElementById("collineQuestion").value.trim();
+        const question = document.getElementById("texteQuestion").value.trim();
+
+        if (question.length > 20) {
+            alert("La question ne doit pas dépasser 20 caractères.");
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from("demandes_questions")
+            .insert([{
+                nom_complet: nom,
+                telephone: telephone,
+                province: province,
+                commune: commune,
+                colline: colline,
+                question: question
+            }]);
+
+        if (error) {
+            document.getElementById("messageQuestion").textContent =
+                "Erreur : " + error.message;
+            return;
+        }
+
+        document.getElementById("messageQuestion").textContent =
+            "Votre question a été envoyée à l'Admin avec succès.";
+
+        formQuestionPublique.reset();
+    });
+}

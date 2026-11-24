@@ -4224,32 +4224,6 @@ demandes.forEach(function(demande) {
 // ======================================
 
 
-        questions.forEach(function(item) {
-
-            const ligne = tableau.insertRow();
-
-            [
-                item.nom_complet,
-                item.telephone,
-                item.province,
-                item.commune,
-                item.colline,
-                item.question,
-                item.date_creation
-                    ? new Date(item.date_creation).toLocaleString()
-                    : ""
-            ].forEach(function(valeur) {
-
-                const cellule = ligne.insertCell();
-                cellule.textContent = valeur || "";
-
-            });
-
-        });
-
-        zone.replaceChildren(tableau);
-    });
-
 // ======================================
 // QUESTIONS DES VISITEURS
 // REPONSE PAR L'ADMIN

@@ -139,6 +139,8 @@ const listeQuestions = document.getElementById("listeQuestions");
 const reponseFAQ = document.getElementById("reponseFAQ");
 const formQuestionPublique = document.getElementById("formQuestionPublique");
 
+const listeReponsesAdmin =
+    document.getElementById("listeReponsesAdmin");
 if (btnAfficherQuestions) {
     btnAfficherQuestions.addEventListener("click", async function() {
 
@@ -215,4 +217,65 @@ if (formQuestionPublique) {
 
         formQuestionPublique.reset();
     });
+}
+
+ 
+// ======================================
+// AFFICHER LES REPONSES DE L'ADMIN
+// ======================================
+
+async function chargerReponsesAdmin() {
+
+    if (!listeReponsesAdmin) return;
+
+    listeReponsesAdmin.textContent =
+        "Chargement des réponses...";
+
+    const { data, error } = await supabaseClient
+        .from("demandes_questions")
+        .select("question, reponse_admin, date_reponse")
+        .not("reponse_admin", "is", null)
+        .neq("reponse_admin", "")
+        .order("date_reponse", { ascending: false });
+
+    if (error) {
+        listeReponsesAdmin.textContent =
+            "Erreur : " + error.message;
+        return;
+    }
+
+    listeReponsesAdmin.innerHTML = "";
+
+    if (!data || data.length === 0) {
+        listeReponsesAdmin.textContent =
+            "Aucune réponse disponible pour le moment.";
+        return;
+    }
+
+    data.forEach(function(item) {
+
+        const bloc = document.createElement("div");
+
+        const question = document.createElement("p");
+        question.textContent = "Question : " + item.question;
+
+        const reponse = document.createElement("p");
+        reponse.textContent =
+            "Réponse de l'Admin : " + item.reponse_admin;
+
+        bloc.appendChild(question);
+        bloc.appendChild(reponse);
+
+        listeReponsesAdmin.appendChild(bloc);
+
+    });
+}
+
+// Charger les réponses à l'ouverture de la zone publique
+
+if (btnAfficherQuestions) {
+    btnAfficherQuestions.addEventListener(
+        "click",
+        chargerReponsesAdmin
+    );
 }

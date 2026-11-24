@@ -4222,52 +4222,7 @@ demandes.forEach(function(demande) {
 });
 
 // ======================================
-// QUESTIONS ENVOYEES PAR LES VISITEURS
-// ADMIN SEULEMENT
-// ======================================
 
-document
-    .getElementById("btnVoirQuestionsVisiteurs")
-    .addEventListener("click", async function() {
-
-        const zone = document.getElementById("listeQuestionsVisiteurs");
-
-        zone.textContent = "Chargement des questions...";
-
-        const { data: questions, error } = await supabaseClient
-            .from("demandes_questions")
-            .select("nom_complet, telephone, province, commune, colline, question, date_creation")
-            .order("date_creation", { ascending: false });
-
-        if (error) {
-            zone.textContent = "Erreur : " + error.message;
-            return;
-        }
-
-        if (!questions || questions.length === 0) {
-            zone.textContent = "Aucune question reçue.";
-            return;
-        }
-
-        const tableau = document.createElement("table");
-        tableau.style.width = "100%";
-        tableau.style.borderCollapse = "collapse";
-
-        const entete = tableau.insertRow();
-
-        [
-            "Nom complet",
-            "Téléphone",
-            "Province",
-            "Commune",
-            "Colline",
-            "Question",
-            "Date"
-        ].forEach(function(titre) {
-            const th = document.createElement("th");
-            th.textContent = titre;
-            entete.appendChild(th);
-        });
 
         questions.forEach(function(item) {
 
@@ -4294,3 +4249,138 @@ document
 
         zone.replaceChildren(tableau);
     });
+
+// ======================================
+// QUESTIONS DES VISITEURS
+// REPONSE PAR L'ADMIN
+// ======================================
+
+const btnVoirQuestionsVisiteurs =
+    document.getElementById("btnVoirQuestionsVisiteurs");
+
+if (btnVoirQuestionsVisiteurs) {
+
+    btnVoirQuestionsVisiteurs.addEventListener("click", chargerQuestionsVisiteurs);
+
+}
+
+async function chargerQuestionsVisiteurs() {
+
+    const zone = document.getElementById("listeQuestionsVisiteurs");
+
+    zone.textContent = "Chargement des questions...";
+
+    const { data: questions, error } = await supabaseClient
+        .from("demandes_questions")
+        .select("id, nom_complet, telephone, province, commune, colline, question, reponse_admin, date_creation, date_reponse")
+        .order("date_creation", { ascending: false });
+
+    if (error) {
+        zone.textContent = "Erreur : " + error.message;
+        return;
+    }
+
+    if (!questions || questions.length === 0) {
+        zone.textContent = "Aucune question reçue.";
+        return;
+    }
+
+    const tableau = document.createElement("table");
+    tableau.style.width = "100%";
+    tableau.style.borderCollapse = "collapse";
+
+    const entete = tableau.insertRow();
+
+    [
+        "Nom complet",
+        "Téléphone",
+        "Province",
+        "Commune",
+        "Colline",
+        "Question",
+        "Réponse de l'Admin",
+        "Action"
+    ].forEach(function(titre) {
+
+        const th = document.createElement("th");
+        th.textContent = titre;
+        entete.appendChild(th);
+
+    });
+
+    questions.forEach(function(item) {
+
+        const ligne = tableau.insertRow();
+
+        [
+            item.nom_complet,
+            item.telephone,
+            item.province,
+            item.commune,
+            item.colline,
+            item.question
+        ].forEach(function(valeur) {
+
+            const cellule = ligne.insertCell();
+            cellule.textContent = valeur || "";
+
+        });
+
+        const celluleReponse = ligne.insertCell();
+
+        const champReponse = document.createElement("textarea");
+        champReponse.value = item.reponse_admin || "";
+        champReponse.placeholder = "Écrire la réponse...";
+        champReponse.style.width = "200px";
+        champReponse.rows = 3;
+
+        celluleReponse.appendChild(champReponse);
+
+        const celluleAction = ligne.insertCell();
+
+        const boutonRepondre = document.createElement("button");
+        boutonRepondre.type = "button";
+        boutonRepondre.textContent = "Répondre";
+
+        boutonRepondre.addEventListener("click", async function() {
+
+            const reponse = champReponse.value.trim();
+
+            if (!reponse) {
+                alert("Veuillez écrire une réponse.");
+                return;
+            }
+
+            boutonRepondre.disabled = true;
+            boutonRepondre.textContent = "Enregistrement...";
+
+            const { error: erreurReponse } = await supabaseClient
+                .from("demandes_questions")
+                .update({
+                    reponse_admin: reponse,
+                    date_reponse: new Date().toISOString()
+                })
+                .eq("id", item.id);
+
+            if (erreurReponse) {
+
+                alert("Erreur : " + erreurReponse.message);
+                boutonRepondre.disabled = false;
+                boutonRepondre.textContent = "Répondre";
+                return;
+
+            }
+
+            alert("Réponse enregistrée avec succès.");
+
+            boutonRepondre.disabled = false;
+            boutonRepondre.textContent = "Réponse enregistrée";
+
+        });
+
+        celluleAction.appendChild(boutonRepondre);
+
+    });
+
+    zone.replaceChildren(tableau);
+}

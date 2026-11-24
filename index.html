@@ -11,7 +11,45 @@
 
     <h1>ITEKA KURI TWESE</h1>
     <p>Bienvenue dans notre système de microfinance.</p>
+<section id="questionsPubliques">
+    <button type="button" id="btnAfficherQuestions">
+        POSER DES QUESTIONS
+    </button>
 
+    <div id="zoneQuestions" style="display:none;">
+        <h2>Questions fréquentes</h2>
+
+        <div id="listeQuestions"></div>
+
+        <p id="reponseFAQ"></p>
+
+        <h2>Envoyer une question à l'Admin</h2>
+
+        <form id="formQuestionPublique">
+            <label>Nom complet :</label>
+            <input type="text" id="nomQuestion" required>
+
+            <label>Numéro de téléphone :</label>
+            <input type="tel" id="telephoneQuestion" required>
+
+            <label>Province :</label>
+            <input type="text" id="provinceQuestion" required>
+
+            <label>Commune :</label>
+            <input type="text" id="communeQuestion" required>
+
+            <label>Colline :</label>
+            <input type="text" id="collineQuestion" required>
+
+            <label>Votre question (20 caractères maximum) :</label>
+            <textarea id="texteQuestion" maxlength="20" required></textarea>
+
+            <button type="submit">Envoyer à l'Admin</button>
+        </form>
+
+        <p id="messageQuestion"></p>
+    </div>
+</section>
     <h2>Connexion</h2>
 
     <form id="loginForm">

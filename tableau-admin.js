@@ -800,7 +800,8 @@ const sectionsAdmin = [
     "sectionCaisseAdmin",
     "sectionHistoriqueAdmin",
     "sectionEcheancesAdmin",
-    "sectionRapportsAdmin"
+    "sectionRapportsAdmin" ,
+    "sectionQuestionsVisiteurs"
 ];
 
 // Cacher toutes les sections au démarrage
@@ -4219,3 +4220,77 @@ demandes.forEach(function(demande) {
     zone.replaceChildren(tableau);
 
 });
+
+// ======================================
+// QUESTIONS ENVOYEES PAR LES VISITEURS
+// ADMIN SEULEMENT
+// ======================================
+
+document
+    .getElementById("btnVoirQuestionsVisiteurs")
+    .addEventListener("click", async function() {
+
+        const zone = document.getElementById("listeQuestionsVisiteurs");
+
+        zone.textContent = "Chargement des questions...";
+
+        const { data: questions, error } = await supabaseClient
+            .from("demandes_questions")
+            .select("nom_complet, telephone, province, commune, colline, question, date_creation")
+            .order("date_creation", { ascending: false });
+
+        if (error) {
+            zone.textContent = "Erreur : " + error.message;
+            return;
+        }
+
+        if (!questions || questions.length === 0) {
+            zone.textContent = "Aucune question reçue.";
+            return;
+        }
+
+        const tableau = document.createElement("table");
+        tableau.style.width = "100%";
+        tableau.style.borderCollapse = "collapse";
+
+        const entete = tableau.insertRow();
+
+        [
+            "Nom complet",
+            "Téléphone",
+            "Province",
+            "Commune",
+            "Colline",
+            "Question",
+            "Date"
+        ].forEach(function(titre) {
+            const th = document.createElement("th");
+            th.textContent = titre;
+            entete.appendChild(th);
+        });
+
+        questions.forEach(function(item) {
+
+            const ligne = tableau.insertRow();
+
+            [
+                item.nom_complet,
+                item.telephone,
+                item.province,
+                item.commune,
+                item.colline,
+                item.question,
+                item.date_creation
+                    ? new Date(item.date_creation).toLocaleString()
+                    : ""
+            ].forEach(function(valeur) {
+
+                const cellule = ligne.insertCell();
+                cellule.textContent = valeur || "";
+
+            });
+
+        });
+
+        zone.replaceChildren(tableau);
+    });

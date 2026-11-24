@@ -1,0 +1,386 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    padding: 30px 15px;
+}
+
+.login-container {
+    background: white;
+    max-width: 500px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #0002;
+}
+
+h2 {
+    text-align: center;
+    color: #14532d;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 11px;
+    margin-top: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 22px;
+    background: #166534;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+}
+/* Page de connexion */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    text-align: center;
+    color: #14532d;
+    font-size: 25px;
+}
+
+p {
+    text-align: center;
+    color: #64748b;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background: #15803d;
+}
+
+/* ==================================
+   DESIGN TABLEAU DE BORD AGENT
+================================== */
+
+.agent-header {
+    background: linear-gradient(135deg, #123456, #2471A3);
+    color: white;
+    padding: 25px;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo-agent h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.logo-agent p {
+    margin: 5px 0 0;
+    color: #D6EAF8;
+    font-size: 13px;
+}
+
+.header-title {
+    margin-top: 30px;
+}
+
+.header-title h2 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.header-title p {
+    color: #D6EAF8;
+    margin-top: 8px;
+}
+
+.btn-deconnexion {
+    background: #E74C3C;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-deconnexion:hover {
+    background: #C0392B;
+}
+
+body {
+    background: #F3F6F9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #263445;
+}
+
+@media (max-width: 600px) {
+    .agent-header {
+        padding: 18px;
+    }
+
+    .logo-agent h1 {
+        font-size: 21px;
+    }
+
+    .header-title h2 {
+        font-size: 21px;
+    }
+}
+
+/* ==================================
+   MENU NAVIGATION AGENT
+================================== */
+
+.menu-agent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.menu-agent button {
+    flex: 1 1 140px;
+    padding: 14px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #2471A3;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-agent button:hover {
+    background: #123456;
+    transform: translateY(-2px);
+}
+
+.menu-agent button.actif {
+    background: #E67E22;
+}
+
+@media (max-width: 600px) {
+    .menu-agent button {
+        flex: 1 1 42%;
+    }
+}
+/* ==================================
+   BORDURES DES MODULES AGENT
+================================== */
+
+main > section {
+    background: #FFFFFF;
+    border: 2px solid #2471A3;
+    border-radius: 12px;
+    padding: 22px;
+    margin: 20px 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+/* Cacher les sections Admin au démarrage */
+#sectionAgents,
+#sectionClientsAdmin,
+#sectionEpargnesAdmin,
+#sectionCreditsAdmin,
+#sectionRemboursementsAdmin,
+#sectionCaisseAdmin,
+#sectionHistoriqueAdmin,
+#sectionEcheancesAdmin,
+#sectionRapportsAdmin {
+    display: none;
+}
+/* BORDURES DES BOUTONS */
+
+main button {
+    border: 1px solid #123456;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 5px;
+}
+
+/* BORDURES DES CHAMPS */
+
+main input,
+main select {
+    border: 1px solid #AAB7B8;
+    border-radius: 6px;
+    padding: 9px;
+    margin: 5px 0 12px;
+}/* ==================================
+   DESIGN DES TABLEAUX
+================================== */
+
+main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+main table th {
+    background: #123456;
+    color: white;
+    padding: 12px;
+    border: 1px solid #AAB7B8;
+    text-align: left;
+}
+
+main table td {
+    padding: 10px;
+    border: 1px solid #AAB7B8;
+    text-align: left;
+}
+
+main table tr:nth-child(even) {
+    background: #F2F6FA;
+}
+
+main table tr:hover {
+    background: #D6EAF8;
+}
+/* DESIGN DU HEADER ADMIN */
+
+.admin-header {
+    background: linear-gradient(135deg, #123456, #2471A3);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.admin-header .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.admin-header .logo-admin h1 {
+    margin: 0;
+}
+
+.admin-header .logo-admin p {
+    margin-top: 5px;
+}
+
+.admin-header .header-title {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.admin-header .header-title h2 {
+    margin-bottom: 8px;
+}
+
+.admin-header .header-title p {
+    margin: 0;
+}
+
+.admin-header .btn-deconnexion {
+    background: #C0392B;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+.menu-admin {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    background: #EAF2F8;
+    border: 2px solid #2471A3;
+    border-radius: 12px;
+}
+
+.menu-admin button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+.menu-admin {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    background: #EAF2F8;
+    border: 2px solid #2471A3;
+    border-radius: 12px;
+}
+
+.menu-admin button {
+    flex: 1 1 180px;
+    min-height: 45px;
+    white-space: normal;
+    background: #123456;
+    color: white;
+    border: 1px solid #2471A3;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.menu-admin button:hover,
+.menu-admin button.actif {
+    background: #D68910;
+}
+.logo-admin {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-admin img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: white;
+    padding: 5px;
+}
+.logo-agent {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-agent img {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: white;
+    padding: 5px;
+}

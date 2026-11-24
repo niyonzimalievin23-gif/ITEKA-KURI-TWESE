@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Agent - ITEKA KURI TWESE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="agent-header">
+
+        <div class="header-top">
+            <div class="logo-agent">
+    <img src="logo.png" alt="Logo ITEKA KURI TWESE">
+    <h1>ITEKA KURI TWESE</h1>
+    <p>Microfinance - Épargne et Crédits</p>
+</div>
+
+            <button id="btnDeconnexion" class="btn-deconnexion">
+                Déconnexion
+            </button>
+        </div>
+
+        <div class="header-title">
+            <h2>Tableau de bord Agent</h2>
+            <p>Bienvenue dans votre espace de travail</p>
+        </div>
+
+    </header>
+
+
+    <main>
+        <h3>Bienvenue Agent</h3>
+
+ 
+<nav class="menu-agent">
+
+    <button type="button" data-section="sectionClients">
+        Clients
+    </button>
+
+    <button type="button" data-section="sectionEpargnes">
+        Épargne
+    </button>
+
+    <button type="button" data-section="sectionCredits">
+        Crédits
+    </button>
+
+    <button type="button" data-section="sectionRemboursements">
+        Remboursements
+    </button>
+
+    <button type="button" data-section="sectionCaisse">
+        Ma Caisse
+    </button>
+	<button type="button" data-section="sectionDemandes">
+    Demandes Admin
+</button>
+
+</nav>
+       
+<section id="sectionClients">
+    <h3>Gestion des Clients</h3>
+
+    <button id="btnAjouterClient">Ajouter un Client</button>
+    <button id="btnVoirClients">Voir les Clients</button>
+<button type="button" id="btnFermerClients">
+    Fermer la liste
+</button>
+    <br><br>
+
+    <input
+        type="text"
+        id="rechercheClient"
+        placeholder="Rechercher par nom ou code..."
+    >
+
+    <div id="formulaireClient" style="display:none;">
+
+        <h4>Informations du Client</h4>
+
+        <label>Code Client</label>
+        <input type="text" id="codeClient">
+
+        <label>Nom complet</label>
+        <input type="text" id="nomClient">
+
+        <label>Téléphone</label>
+        <input type="text" id="telephoneClient">
+
+        <label>Adresse</label>
+        <input type="text" id="adresseClient">
+
+        <label>Numéro de pièce</label>
+        <input type="text" id="numeroPieceClient">
+
+        <label>Date d'inscription</label>
+        <input type="date" id="dateInscriptionClient">
+
+        <button id="btnEnregistrerClient">Enregistrer</button>
+        <button id="btnAnnulerClient">Annuler</button>
+
+    </div>
+
+    <div id="listeClients"></div>
+</section>
+
+
+
+<section id="sectionEpargnes">
+    <h3>Gestion des Épargnes</h3>
+
+    <label>Choisir le Client</label>
+    <select id="clientEpargne" required>
+        <option value="">Sélectionner un Client</option>
+    </select>
+
+<label>Type d'opération</label>
+<select id="typeOperationEpargne" required>
+ <option value="">Choisir le type</option>
+<option value="DEPOT">Dépôt</option>
+<option value="RETRAIT">Retrait</option>
+
+</select>
+
+    <label>Montant (BIF)</label>
+    <input type="number" id="montantEpargne" min="1" required>
+
+    <label>Date de l'opération</label>
+    <input type="date" id="dateEpargne" required>
+
+    <label>Observation</label>
+    <input type="text" id="observationEpargne">
+
+    <button type="button" id="btnEnregistrerEpargne">
+        Enregistrer l'Épargne
+    </button>
+
+    <div id="messageEpargne"></div>
+	<hr>
+
+<h3>Historique des Épargnes</h3>
+
+<button type="button" id="btnAfficherEpargnes">
+    Afficher les opérations
+</button>
+
+<div id="listeEpargnes"></div>
+</section>
+
+
+        <section id="sectionCredits">
+
+    <h3>Gestion des Crédits</h3>
+
+    <label>Choisir le Client</label>
+    <select id="clientCredit" required>
+        <option value="">Sélectionner un Client</option>
+    </select>
+
+    <label>Montant du Crédit (BIF)</label>
+    <input type="number" id="montantCredit" min="1" required>
+
+    <label>Date d'octroi du Crédit</label>
+    <input type="date" id="dateCredit" required>
+
+    <label>Durée de remboursement (mois)</label>
+    <input type="number" id="dureeCredit" min="1" required>
+
+    <label>Observation</label>
+    <input type="text" id="observationCredit">
+
+    <button type="button" id="btnEnregistrerCredit">
+        Enregistrer le Crédit
+    </button>
+
+    <div id="messageCredit"></div>
+
+</section>
+
+        <section id="sectionRemboursements">
+
+    <h3>Gestion des Remboursements</h3>
+
+    <label>Choisir le Client</label>
+    <select id="clientRemboursement" required>
+        <option value="">Sélectionner un Client</option>
+    </select>
+
+    <label>Choisir le Crédit</label>
+    <select id="creditRemboursement" required>
+        <option value="">Sélectionner un Crédit</option>
+    </select>
+
+    <label>Montant remboursé (BIF)</label>
+    <input type="number" id="montantRemboursement" min="1" required>
+
+    <label>Date de remboursement</label>
+    <input type="date" id="dateRemboursement" required>
+
+    <label>Observation</label>
+    <input type="text" id="observationRemboursement">
+
+    <button type="button" id="btnEnregistrerRemboursement">
+        Enregistrer le remboursement
+    </button>
+
+    <div id="messageRemboursement"></div>
+
+    <button type="button" id="btnRetourRemboursement">
+        Retour
+    </button>
+
+</section>
+
+        
+<section id="sectionCaisse">
+
+    <h3>Gestion de Caisse</h3>
+
+    <h4>Solde actuel</h4>
+    <div id="soldeCaisse">0 BIF</div>
+
+    <button type="button" id="btnVoirCaisse">
+        Voir les opérations de Caisse
+    </button>
+
+    <button type="button" id="btnFermerCaisse">
+        Fermer la liste
+    </button>
+
+    <div id="listeCaisse"></div>
+
+</section>
+
+
+        
+<section id="sectionDemandes">
+    <h3>Demandes de l'Administrateur</h3>
+    <button type="button" id="btnVoirDemandes">
+        Voir les demandes
+    </button>
+    <div id="listeDemandes"></div>
+</section>
+    </main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="tableau-agent.js"></script></body>
+</html>

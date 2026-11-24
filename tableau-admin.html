@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Administrateur - ITEKA KURI TWESE</title>
+    <link rel="stylesheet" href="style.css">
+	<style>
+    table th:last-child,
+    table td:last-child {
+        width: 160px;
+        min-width: 160px;
+        max-width: 160px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    table td:last-child button {
+        padding: 6px 6px;
+        font-size: 11px;
+        margin: 2px;
+    }
+</style>
+</head>
+
+<body>
+
+<header class="admin-header">
+    <div class="header-top">
+       <div class="logo-admin">
+ <img src="logo.png" alt="Logo ITEKA KURI TWESE">
+    <h1>ITEKA KURI TWESE</h1>
+    <p>Microfinance - Épargne et Crédits</p>
+</div>
+
+        <button type="button" id="btnDeconnexion" class="btn-deconnexion">
+            Déconnexion
+        </button>
+    </div>
+
+    <div class="header-title">
+        <h2>Tableau de bord Administrateur</h2>
+        <p>Bienvenue dans votre espace d'administration</p>
+    </div>
+</header>
+
+<main>
+
+    <h3>Bienvenue Admin</h3>
+
+    <!-- MENU ADMIN -->
+    <nav class="menu-admin">
+
+        <button type="button" data-section="sectionAgents">
+            Gestion des Agents
+        </button>
+
+        <button type="button" data-section="sectionClientsAdmin">
+            Gestion des Clients
+        </button>
+
+        <button type="button" data-section="sectionEpargnesAdmin">
+            Gestion Épargne
+        </button>
+
+        <button type="button" data-section="sectionCreditsAdmin">
+            Gestion des Crédits
+        </button>
+
+        <button type="button" data-section="sectionRemboursementsAdmin">
+            Gestion des Remboursements
+        </button>
+
+        <button type="button" data-section="sectionCaisseAdmin">
+            Gestion de Caisse
+        </button>
+
+        <button type="button" data-section="sectionHistoriqueAdmin">
+            Historique général
+        </button>
+
+        <button type="button" data-section="sectionEcheancesAdmin">
+            Gestion des Échéances
+        </button>
+
+        <button type="button" data-section="sectionRapportsAdmin">
+            Rapports et Statistiques
+        </button>
+
+    </nav>
+
+
+    <!-- GESTION DES AGENTS -->
+    <section id="sectionAgents">
+
+        <h3>Gestion des Agents</h3>
+
+
+        <button type="button" id="btnAjouterAgent">
+            Ajouter un Agent
+        </button>
+
+        <button type="button" id="btnVoirAgents">
+            Voir les Agents
+        </button>
+
+        <input
+            type="text"
+            id="rechercheAgent"
+            placeholder="Rechercher un Agent par nom..."
+        >
+
+        <div id="listeAgents"></div>
+
+        <div id="formulaireAgent" style="display:none;">
+
+            <h4>Ajouter un nouvel Agent</h4>
+
+            <label>Code Agent</label>
+            <input type="text" id="nouveauCodeAgent">
+
+            <label>Nom complet</label>
+            <input type="text" id="nouveauNomAgent">
+
+            <label>Téléphone</label>
+            <input type="text" id="nouveauTelephoneAgent">
+
+            <label>Adresse e-mail</label>
+            <input type="email" id="nouveauEmailAgent">
+
+            <label>Mot de passe provisoire</label>
+            <input type="password" id="nouveauMotDePasseAgent">
+
+            <button type="button" id="btnEnregistrerAgent">
+                Enregistrer
+            </button>
+
+            <button type="button" id="btnAnnulerAgent">
+                Annuler
+            </button>
+
+        </div>
+
+        <button type="button" id="btnMasquerAgents">
+            Masquer la liste
+        </button>
+
+    </section>
+
+
+    <!-- GESTION DES CLIENTS -->
+    <section id="sectionClientsAdmin">
+
+        <h3>Gestion des Clients</h3>
+
+        <input
+            type="text"
+            id="rechercheClientsAdmin"
+            placeholder="Rechercher par code ou nom..."
+        >
+
+        <button type="button" id="btnVoirTousClients">
+            Voir tous les Clients
+        </button>
+
+        <button type="button" id="btnFermerListeClients">
+            Fermer la liste
+        </button>
+
+        <div id="formulaireModifierClient" style="display:none;">
+
+            <h4>Modifier les informations du Client</h4>
+
+            <label>Code Client</label>
+            <input type="text" id="adminCodeClient">
+
+            <label>Nom complet</label>
+            <input type="text" id="adminNomClient">
+
+            <label>Téléphone</label>
+            <input type="text" id="adminTelephoneClient">
+
+            <label>Adresse</label>
+            <input type="text" id="adminAdresseClient">
+
+            <label>Numéro de pièce</label>
+            <input type="text" id="adminNumeroPieceClient">
+
+            <label>Date d'inscription</label>
+            <input type="date" id="adminDateInscriptionClient">
+
+            <button type="button" id="btnSauverModificationClient">
+                Enregistrer les modifications
+            </button>
+
+            <button type="button" id="btnAnnulerModificationClient">
+                Annuler
+            </button>
+
+        </div>
+
+        <div id="listeTousClients"></div>
+
+    </section>
+
+
+    <!-- GESTION DES EPARGNES -->
+    
+<section id="sectionEpargnesAdmin">
+    <h3>Gestion des Épargnes</h3>
+
+    <button type="button" id="btnVoirToutesEpargnes">
+        Voir toutes les Épargnes
+    </button>
+
+    <button type="button" id="btnFermerEpargnesAdmin">
+        Fermer la liste
+    </button>
+
+    <div id="listeToutesEpargnes"></div>
+</section>
+
+
+
+    <!-- GESTION DES CREDITS -->
+    
+<section id="sectionCreditsAdmin">
+    <h3>Gestion des Crédits</h3>
+
+    <button type="button" id="btnVoirTousCredits">
+        Voir tous les Crédits
+    </button>
+
+    <button type="button" id="btnFermerCreditsAdmin">
+        Fermer la liste
+    </button>
+
+    <div id="listeTousCredits"></div>
+	<hr>
+
+<h3>Réponses des Agents aux demandes</h3>
+
+<button type="button" id="btnVoirReponsesDemandes">
+    Voir les réponses des Agents
+</button>
+
+<div id="listeReponsesDemandes"></div>
+</section>
+
+
+
+    <!-- GESTION DES REMBOURSEMENTS -->
+   
+<section id="sectionRemboursementsAdmin">
+    <h3>Gestion des Remboursements</h3>
+
+    <button type="button" id="btnVoirTousRemboursements">
+        Voir tous les Remboursements
+    </button>
+
+    <button type="button" id="btnFermerRemboursementsAdmin">
+        Fermer la liste
+    </button>
+
+    <div id="listeTousRemboursements"></div>
+</section>
+
+
+
+    <!-- GESTION DE CAISSE -->
+    
+<section id="sectionCaisseAdmin">
+    <h3>Gestion de Caisse</h3>
+
+    <h4>Solde général</h4>
+    <div id="soldeGeneralAdmin">0 BIF</div>
+
+    <button type="button" id="btnVoirCaisseAdmin">
+        Voir toutes les opérations
+    </button>
+
+    <button type="button" id="btnFermerCaisseAdmin">
+        Fermer la liste
+    </button>
+
+    <div id="listeCaisseAdmin"></div>
+</section>
+
+
+
+    <!-- HISTORIQUE GENERAL -->
+    <section id="sectionHistoriqueAdmin">
+
+        <h3>Historique des Activités</h3>
+
+
+        <input
+            type="text"
+            id="rechercheNomHistorique"
+            placeholder="Rechercher par nom complet d'Agent..."
+        >
+
+        <input
+            type="date"
+            id="rechercheDateHistorique"
+        >
+
+        <input
+            type="text"
+            id="rechercheActionHistorique"
+            placeholder="Rechercher par module ou action..."
+        >
+
+        <br><br>
+
+        <button type="button" id="btnVoirHistoriqueAdmin">
+            Voir Historique
+        </button>
+
+        <button type="button" id="btnFermerHistoriqueAdmin">
+            Fermer la liste
+        </button>
+
+        <div id="listeHistoriqueAdmin"></div>
+
+    </section>
+
+
+    <!-- GESTION DES ECHEANCES -->
+    <section id="sectionEcheancesAdmin">
+
+        <h3>Gestion des Échéances</h3>
+
+        <label>Jour mensuel de remboursement (1 à 31)</label>
+
+        <input
+            type="number"
+            id="nouveauJourEcheance"
+            min="1"
+            max="31"
+            placeholder="Exemple : 15"
+        >
+
+        <button type="button" id="btnModifierEcheancesGlobales">
+            Modifier les Échéances
+        </button>
+
+        <div id="messageEcheancesAdmin"></div>
+
+    </section>
+
+
+    <!-- RAPPORTS ET STATISTIQUES -->
+    
+<section id="sectionRapportsAdmin">
+    <h3>Rapports et Statistiques</h3>
+
+    <button type="button" id="btnChargerRapports">
+        Afficher les Rapports
+    </button>
+
+    <div id="resultatsRapportsAdmin"></div>
+</section>
+
+
+</main>
+
+
+<!-- SCRIPTS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="tableau-admin.js"></script>
+
+</body>
+</html>

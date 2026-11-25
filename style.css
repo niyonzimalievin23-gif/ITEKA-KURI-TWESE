@@ -384,3 +384,140 @@ main table tr:hover {
     background: white;
     padding: 5px;
 }
+
+/* ==================================
+   RESPONSIVE - ITEKA KURI TWESE
+================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+main > section {
+    width: 100%;
+    min-width: 0;
+}
+
+main input,
+main select {
+    width: 100%;
+    max-width: 100%;
+}
+
+main button {
+    max-width: 100%;
+}
+
+main table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.admin-header {
+    width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+
+    body {
+        padding: 10px 5px;
+    }
+
+    main {
+        padding: 8px;
+    }
+
+    .admin-header {
+        padding: 15px 10px;
+        border-radius: 10px;
+    }
+
+    .admin-header .header-top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo-admin {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .logo-admin img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .logo-admin h1 {
+        font-size: 21px;
+    }
+
+    .admin-header .header-title {
+        margin-top: 15px;
+    }
+
+    .admin-header .header-title h2 {
+        font-size: 19px;
+    }
+
+    .btn-deconnexion {
+        width: 100%;
+    }
+
+    .menu-admin {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .menu-admin button {
+        width: 100%;
+        min-width: 0;
+        min-height: 55px;
+        margin: 0;
+        padding: 9px 5px;
+        font-size: 12px;
+        white-space: normal;
+    }
+
+    main > section {
+        padding: 12px 8px;
+        margin: 12px 0;
+    }
+
+    main > section h3 {
+        font-size: 18px;
+    }
+
+    main button {
+        font-size: 13px;
+        padding: 10px 7px;
+    }
+
+    main input,
+    main select {
+        font-size: 16px;
+    }
+}

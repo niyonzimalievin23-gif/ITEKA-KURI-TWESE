@@ -521,3 +521,37 @@ main table {
         font-size: 16px;
     }
 }
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #sectionRapportsAdmin,
+    #sectionRapportsAdmin * {
+        visibility: visible !important;
+    }
+
+    #sectionRapportsAdmin {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 15px;
+        background: white;
+    }
+
+    #btnChargerRapports,
+    #btnImprimerRapports {
+        display: none !important;
+    }
+
+    #resultatsRapportsAdmin {
+        display: block !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+}

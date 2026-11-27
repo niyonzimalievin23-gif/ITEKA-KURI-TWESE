@@ -384,6 +384,21 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="tableau-admin.js"></script>
+<script>
+document.getElementById("btnImprimerRapports")
+    .addEventListener("click", function () {
 
+        const rapports = document.getElementById(
+            "resultatsRapportsAdmin"
+        );
+
+        if (!rapports || rapports.innerHTML.trim() === "") {
+            alert("Veuillez d'abord afficher les rapports.");
+            return;
+        }
+
+        window.print();
+    });
+</script>
 </body>
 </html>

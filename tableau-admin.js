@@ -4360,6 +4360,334 @@ async function chargerQuestionsVisiteurs() {
 }
 
 // ==========================================
+// RECHERCHE DE TOUTES LES OPERATIONS - ADMIN
+// ==========================================
+
+const btnRechercherOperations = document.getElementById(
+    "btnRechercherOperations"
+);
+
+if (btnRechercherOperations) {
+
+    btnRechercherOperations.addEventListener("click", async function() {
+
+        const dateDebut = document.getElementById(
+            "dateDebutOperations"
+        ).value;
+
+        const dateFin = document.getElementById(
+            "dateFinOperations"
+        ).value;
+
+        const zone = document.getElementById(
+            "resultatsOperationsAdmin"
+        );
+
+        if (!dateDebut || !dateFin) {
+            alert("Veuillez choisir la date de début et la date de fin.");
+            return;
+        }
+
+        if (dateDebut > dateFin) {
+            alert("La date de début doit être avant la date de fin.");
+            return;
+        }
+
+        zone.textContent = "Recherche des opérations en cours...";
+
+        try {
+
+            const [
+                resultatEpargnes,
+                resultatCredits,
+                resultatRemboursements,
+                resultatCaisse,
+                resultatAgents,
+                resultatClients
+            ] = await Promise.all([
+
+                supabaseClient
+                    .from("epargnes")
+                    .select("*")
+                    .gte("date_operation", dateDebut)
+                    .lte("date_operation", dateFin),
+
+                supabaseClient
+                    .from("credits")
+                    .select("*")
+                    .gte("date_credit", dateDebut)
+                    .lte("date_credit", dateFin),
+
+                supabaseClient
+                    .from("remboursements")
+                    .select("*")
+                    .gte("date_remboursement", dateDebut)
+                    .lte("date_remboursement", dateFin),
+
+                supabaseClient
+                    .from("caisse_operations")
+                    .select("*")
+                    .gte("date_operation", dateDebut)
+                    .lte("date_operation", dateFin),
+
+                supabaseClient
+                    .from("agents")
+                    .select("id, nom_complet"),
+
+                supabaseClient
+                    .from("clients")
+                    .select("id, nom_complet")
+
+            ]);
+
+            const resultats = [
+                resultatEpargnes,
+                resultatCredits,
+                resultatRemboursements,
+                resultatCaisse,
+                resultatAgents,
+                resultatClients
+            ];
+
+            const erreur = resultats.find(r => r.error);
+
+            if (erreur) {
+                zone.textContent = "Erreur : " + erreur.error.message;
+                return;
+            }
+
+            const agents = resultatAgents.data || [];
+            const clients = resultatClients.data || [];
+
+            let operations = [];
+
+            function ajouterOperation(
+                liste,
+                type,
+                champDate,
+                champMontant,
+                avecTypeOperation
+            ) {
+
+                (liste || []).forEach(function(item) {
+
+                    const agent = agents.find(
+                        a => a.id === item.agent_id
+                    );
+
+                    const client = clients.find(
+                        c => c.id === item.client_id
+                    );
+
+                    let typeFinal = type;
+
+                    if (avecTypeOperation && item.type_operation) {
+                        typeFinal = type + " - " + item.type_operation;
+                    }
+
+                    operations.push({
+
+                        date: item[champDate]
+                            ? item[champDate].toString().slice(0, 10)
+                            : "",
+
+                        type: typeFinal,
+                        client: client ? client.nom_complet : "",
+                        agent: agent ? agent.nom_complet : "",
+                        montant: Number(item[champMontant]) || 0
+
+                    });
+
+                });
+
+            }
+
+            // ÉPARGNES : DÉPÔT ET RETRAIT
+            ajouterOperation(
+                resultatEpargnes.data,
+                "ÉPARGNE",
+                "date_operation",
+                "montant",
+                true
+            );
+
+            // CRÉDITS
+            ajouterOperation(
+                resultatCredits.data,
+                "CRÉDIT",
+                "date_credit",
+                "montant_credit",
+                false
+            );
+
+            // REMBOURSEMENTS
+            ajouterOperation(
+                resultatRemboursements.data,
+                "REMBOURSEMENT",
+                "date_remboursement",
+                "montant_rembourse",
+                false
+            );
+
+            // CAISSE : ENTRÉE ET SORTIE
+            ajouterOperation(
+                resultatCaisse.data,
+                "CAISSE",
+                "date_operation",
+                "montant",
+                true
+            );
+
+            // CLASSER LES OPÉRATIONS PAR DATE
+            operations.sort(function(a, b) {
+                return a.date.localeCompare(b.date);
+            });
+
+            if (operations.length === 0) {
+                zone.textContent =
+                    "Aucune opération trouvée pour cette période.";
+                return;
+            }
+
+            // ==========================================
+            // CALCUL DU BILAN DES OPERATIONS
+            // ==========================================
+
+            const totalDepots = operations
+                .filter(o => o.type.includes("DEPOT"))
+                .reduce((total, o) => total + o.montant, 0);
+
+            const totalRetraits = operations
+                .filter(o => o.type.includes("RETRAIT"))
+                .reduce((total, o) => total + o.montant, 0);
+
+            const totalCredits = operations
+                .filter(o => o.type === "CRÉDIT")
+                .reduce((total, o) => total + o.montant, 0);
+
+            const totalRemboursements = operations
+                .filter(o => o.type === "REMBOURSEMENT")
+                .reduce((total, o) => total + o.montant, 0);
+
+            const totalEntreesCaisse = operations
+                .filter(o => o.type.includes("CAISSE") && o.type.includes("ENTREE"))
+                .reduce((total, o) => total + o.montant, 0);
+
+            const totalSortiesCaisse = operations
+                .filter(o => o.type.includes("CAISSE") && o.type.includes("SORTIE"))
+                .reduce((total, o) => total + o.montant, 0);
+
+            const bilanZone = document.getElementById(
+                "bilanOperationsAdmin"
+            );
+
+            if (bilanZone) {
+
+                bilanZone.innerHTML = `
+                    <table style="width:100%; border-collapse:collapse;">
+                        <tr><th>Indicateur</th><th>Montant (BIF)</th></tr>
+                        <tr><td>Total des dépôts</td><td>${totalDepots.toLocaleString("fr-FR")}</td></tr>
+                        <tr><td>Total des retraits</td><td>${totalRetraits.toLocaleString("fr-FR")}</td></tr>
+                        <tr><td>Total des crédits</td><td>${totalCredits.toLocaleString("fr-FR")}</td></tr>
+                        <tr><td>Total des remboursements</td><td>${totalRemboursements.toLocaleString("fr-FR")}</td></tr>
+                        <tr><td>Total des entrées caisse</td><td>${totalEntreesCaisse.toLocaleString("fr-FR")}</td></tr>
+                        <tr><td>Total des sorties caisse</td><td>${totalSortiesCaisse.toLocaleString("fr-FR")}</td></tr>
+                        <tr><th>Nombre total d'opérations</th><th>${operations.length}</th></tr>
+                    </table>
+                `;
+
+            }
+
+            // CRÉER LE TABLEAU
+            const tableau = document.createElement("table");
+
+            tableau.style.width = "100%";
+            tableau.style.borderCollapse = "collapse";
+
+            const entete = tableau.insertRow();
+
+            [
+                "Date",
+                "Type d'opération",
+                "Client",
+                "Agent",
+                "Montant (BIF)"
+            ].forEach(function(titre) {
+
+                const cellule = document.createElement("th");
+
+                cellule.textContent = titre;
+                cellule.style.border = "1px solid black";
+                cellule.style.padding = "8px";
+
+                entete.appendChild(cellule);
+
+            });
+
+            // REMPLIR LE TABLEAU
+            operations.forEach(function(operation) {
+
+                const ligne = tableau.insertRow();
+
+                [
+                    operation.date,
+                    operation.type,
+                    operation.client,
+                    operation.agent,
+                    operation.montant.toLocaleString("fr-FR")
+                ].forEach(function(valeur) {
+
+                    const cellule = ligne.insertCell();
+
+                    cellule.textContent = valeur;
+                    cellule.style.border = "1px solid black";
+                    cellule.style.padding = "8px";
+
+                });
+
+            });
+
+            zone.replaceChildren(tableau);
+
+        } catch (error) {
+
+            zone.textContent = "Erreur : " + error.message;
+
+        }
+
+    });
+
+}
+
+
+// ==========================================
+// IMPRESSION DES OPERATIONS - ADMIN
+// ==========================================
+
+const btnImprimerOperations = document.getElementById(
+    "btnImprimerOperations"
+);
+
+if (btnImprimerOperations) {
+
+    btnImprimerOperations.addEventListener("click", function() {
+
+        const zone = document.getElementById(
+            "resultatsOperationsAdmin"
+        );
+
+        if (!zone || !zone.querySelector("table")) {
+            alert("Veuillez d'abord rechercher les opérations.");
+            return;
+        }
+
+        window.print();
+
+    });
+
+}
+
+// ==========================================
 // EXPORTATION DES OPERATIONS ET BILAN - ADMIN
 // ==========================================
 

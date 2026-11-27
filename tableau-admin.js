@@ -4358,3 +4358,98 @@ async function chargerQuestionsVisiteurs() {
 
     zone.replaceChildren(tableau);
 }
+
+// ==========================================
+// EXPORTATION DES OPERATIONS ET BILAN - ADMIN
+// ==========================================
+
+const btnExporterOperations = document.getElementById(
+    "btnExporterOperations"
+);
+
+if (btnExporterOperations) {
+
+    btnExporterOperations.addEventListener("click", function() {
+
+        const zone = document.getElementById(
+            "resultatsOperationsAdmin"
+        );
+
+        const bilanZone = document.getElementById(
+            "bilanOperationsAdmin"
+        );
+
+        const tableauOperations = zone
+            ? zone.querySelector("table")
+            : null;
+
+        const tableauBilan = bilanZone
+            ? bilanZone.querySelector("table")
+            : null;
+
+        if (!tableauOperations) {
+            alert("Veuillez d'abord rechercher les opérations.");
+            return;
+        }
+
+        const lignes = [];
+
+        function ajouterTableau(tableau, titre) {
+
+            if (!tableau) return;
+
+            lignes.push('"' + titre + '"');
+
+            Array.from(tableau.rows).forEach(function(ligne) {
+
+                const cellules = Array.from(ligne.cells).map(
+                    function(cellule) {
+
+                        return '"' + cellule.textContent
+                            .replace(/"/g, '""') + '"';
+
+                    }
+                );
+
+                lignes.push(cellules.join(";"));
+
+            });
+
+            lignes.push("");
+
+        }
+
+        ajouterTableau(
+            tableauOperations,
+            "LISTE DES OPERATIONS"
+        );
+
+        ajouterTableau(
+            tableauBilan,
+            "BILAN DES OPERATIONS"
+        );
+
+        const contenu = "\uFEFF" + lignes.join("\r\n");
+
+        const fichier = new Blob(
+            [contenu],
+            { type: "text/csv;charset=utf-8;" }
+        );
+
+        const url = URL.createObjectURL(fichier);
+
+        const lien = document.createElement("a");
+
+        lien.href = url;
+        lien.download = "Operations_Admin_avec_Bilan.csv";
+
+        document.body.appendChild(lien);
+        lien.click();
+
+        document.body.removeChild(lien);
+
+        URL.revokeObjectURL(url);
+
+    });
+
+}
